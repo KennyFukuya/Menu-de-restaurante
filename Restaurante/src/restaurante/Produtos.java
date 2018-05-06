@@ -21,14 +21,14 @@ public abstract class Produtos implements Cardapio{
     
     
     public String disponibilidade(){
-        if(getStock()==Disponibilidade.FALSE.getValor()){ //ENUM PARA SABER SE TEM ESTOQUE
+        if(getStock()==Enumerador.FALSE.getValor()){ //ENUM PARA SABER SE TEM ESTOQUE
             return " infelizmente nao ";
         }else
             return " ";
     }
     
     public void order() {
-        if(getStock()>Disponibilidade.FALSE.getValor()){ //ENUM PARA SABER SE TEM ESTOQUE
+        if(getStock()>Enumerador.FALSE.getValor()){ //ENUM PARA SABER SE TEM ESTOQUE
            setStock(getStock()-1);
         }else{
             System.out.println("\nERRO: Sem estoque!!!\n");

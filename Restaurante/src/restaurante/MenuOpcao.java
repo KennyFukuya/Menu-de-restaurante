@@ -14,8 +14,10 @@ public class MenuOpcao {
         System.out.println("|     2- Adicionar bebidas ao cardapio     |");
         System.out.println("|     3- Mostrar o cardapio                |");
         System.out.println("|     4- Alterar item do cardapio          |");
-        System.out.println("|     5- Remover item do cardapio          |");
-        System.out.println("|     6- Voltar pro menu principal         |");
+        System.out.println("|     5- Alterar apenas o preço de um item |");
+        System.out.println("|     6- Alterar o estoque de um item      |");
+        System.out.println("|     7- Remover item do cardapio          |");
+        System.out.println("|     8- Voltar pro menu principal         |");
         System.out.println("--------------------------------------------");
     }
     
@@ -30,10 +32,13 @@ public class MenuOpcao {
     
     private int i=0,inputADM,inputUSER;
     private static int indice=1;
+    public final int MAX_Comidas = 8,MAX_Bebidas = 6;
+    
+    //define uma qnt maxima de bebidas e comidas  
+    Comidas food[] = new Comidas[MAX_Comidas];        //const=8
+    Bebidas drink[] = new Bebidas[MAX_Bebidas];       //const=6
 
-    Bebidas drink[] = new Bebidas[6];  //define uma qnt maxima de bebidas e comidas
-    Comidas food[] = new Comidas[8];
-
+    Scanner stdin = new Scanner(System.in);
     Scanner optionUSER = new Scanner(System.in);
     Scanner optionADM = new Scanner(System.in);
     Scanner modify = new Scanner(System.in);
@@ -48,12 +53,12 @@ public class MenuOpcao {
         
 
     public void inicializaProdutos(){  //Instancia os produtos com um indicador de indice (CODE) e stock=0 para comparacoes
-        for(i=0;i<8;i++){
+        for(i=0;i<Enumerador.COMIDAS.getValor();i++){      //ENUM comidas=8 (max de 8 comidas no cardapio)
             food[i] = new Comidas(indice,0);
             indice++;
         }
 
-        for(i=0;i<6;i++){
+        for(i=0;i<Enumerador.BEBIDAS.getValor();i++){    //ENUM bebidas=6 (max de 6 comidas no cardapio)
             drink[i] = new Bebidas(indice,0);
             indice++;
         }
@@ -69,9 +74,7 @@ public class MenuOpcao {
             System.out.println("|          3- Fechar o programa            |");
             System.out.println("--------------------------------------------");
 
-            Scanner fullLoop = new Scanner(System.in);
-
-            int option = fullLoop.nextInt();
+            int option = stdin.nextInt();
 
             switch(option){
                 case 1:
@@ -96,7 +99,7 @@ public class MenuOpcao {
     public void menuADM(){
         boolean checkloopADM=true;
         
-        System.out.print("Digite a Senha (Peru): ");
+        System.out.print("Digite a Senha (Peru): ");   //Solicita a senha de um ADM, no caso a senha eh PERU
         String password = pass.nextLine();
         if("Peru".equals(password)){
             do{
@@ -105,7 +108,7 @@ public class MenuOpcao {
                 switch(inputADM){
                     case 1: 
                         int contErrorFood=0;
-                        for(int index=0;index<8;index++){
+                        for(int index=0;index<Enumerador.COMIDAS.getValor();index++){      //ENUM comidas=8 (max de 8 comidas no cardapio)
                             if("".equals(food[index].getName())){
                                 System.out.print("Digite o nome da comida: ");
                                 String foodName = leNome.nextLine();
@@ -121,20 +124,20 @@ public class MenuOpcao {
 
                                 food[index].addItem(foodName,foodSize,foodPrice,foodStock);
                                 
-                                System.out.println("\nComida adicionada ao cardapio com sucesso!!!");
+                                System.out.println("\nComida adicionada ao cardapio com sucesso!!!\n");
                                 contErrorFood--;
                                 break;
                             }else{
                                 contErrorFood++;
                             }
-                        }if(contErrorFood==8){
+                        }if(contErrorFood==Enumerador.COMIDAS.getValor()){        //ENUM comidas=8 (max de 8 comidas no cardapio)
                             System.out.println("\nERRO: Limite atingido!!!\n");
                         }
                         break;
 
                     case 2:
                         int contErrorDrink=0;
-                        for(int index=0;index<6;index++){
+                        for(int index=0;index<Enumerador.BEBIDAS.getValor();index++){       //ENUM bebidas=6 (max de 6 comidas no cardapio)
                             if("".equals(drink[index].getName())){
                                 System.out.print("Digite o nome da bebida: ");
                                 String drinkName = leNome.nextLine();
@@ -150,25 +153,25 @@ public class MenuOpcao {
 
                                 drink[index].addItem(drinkName,drinkPrice,drinkBrand,drinkStock);
                                 
-                                System.out.println("\nBebida adicionada ao cardapio com sucesso!!!");
+                                System.out.println("\nBebida adicionada ao cardapio com sucesso!!!\n");
                                 contErrorDrink--;
                                 break;
                             }else{
                                 contErrorDrink++;
                             }
-                        }if(contErrorDrink==6){
+                        }if(contErrorDrink==Enumerador.BEBIDAS.getValor()){    //ENUM bebidas=6 (max de 6 comidas no cardapio)
                             System.out.println("\nERRO: Limite atingido!!!\n");
                         }
                         break;
 
                     case 3:
                         System.out.print("  ** COMIDAS **  \n");
-                        for(i=0;i<8;i++){
+                        for(i=0;i<Enumerador.COMIDAS.getValor();i++){     //ENUM comidas=8 (max de 8 comidas no cardapio)
                             System.out.print(food[i].showItems());
                         }
 
                         System.out.print("\n  ** BEBIDAS **  \n");
-                        for(i=0;i<6;i++){
+                        for(i=0;i<Enumerador.BEBIDAS.getValor();i++){    //ENUM bebidas=6 (max de 6 comidas no cardapio)
                             System.out.print(drink[i].showItems());
                         }
                         break;
@@ -176,8 +179,8 @@ public class MenuOpcao {
                     case 4:
                         System.out.print("Digite o codigo do produto a ser alterado: ");
                         int modifyCode = modify.nextInt();
-                        if(modifyCode<9){
-                            for(i=0;i<8;i++){
+                        if(modifyCode<Enumerador.CODECOMIDAS.getValor()){       //ENUM codecomidas=9 (Codigo das comidas 1 ate 8)
+                            for(i=0;i<Enumerador.COMIDAS.getValor();i++){     //ENUM comidas=8 (max de 8 comidas no cardapio)
                                 if(food[i].getCode()==modifyCode){
                                     System.out.print("Nome: ");
                                     String foodName = leNome.nextLine();
@@ -193,11 +196,11 @@ public class MenuOpcao {
 
                                     food[i].changeItem(foodName,foodSize,foodPrice,foodStock);
                                     
-                                    System.out.println("\nProduto alterado com sucesso!!!");
+                                    System.out.println("\nProduto alterado com sucesso!!!\n");
                                 }
                             }
-                        }else if(modifyCode<15){
-                            for(i=0;i<6;i++){
+                        }else if(modifyCode<Enumerador.CODEBEBIDAS.getValor()){    //ENUM codebebidas=15 (Codigo das bebidas 9 ate 14)
+                            for(i=0;i<Enumerador.BEBIDAS.getValor();i++){    //ENUM bebidas=6 (max de 6 comidas no cardapio)
                                 if(drink[i].getCode()==modifyCode){
                                     System.out.print("Nome: ");
                                     String drinkName = leNome.nextLine();
@@ -211,9 +214,86 @@ public class MenuOpcao {
                                     System.out.print("Estoque: ");
                                     int drinkStock = leEstoque.nextInt();
 
-                                    drink[i].changeItem(drinkName,drinkPrice,drinkBrand,drinkStock);
+                                    drink[i].changeItem(drinkName,drinkBrand,drinkPrice,drinkStock);
                                     
-                                    System.out.println("\nProduto alterado com sucesso!!!");
+                                    System.out.println("\nProduto alterado com sucesso!!!\n");
+                                }
+                            }
+                        }else{
+                            System.out.println("\nERRO: Impossivel alterar!!!\n");
+                        }
+                        break;
+                        
+                        
+                    case 5:
+                        System.out.println("Digite o codigo do produto a ser alterado: ");
+                        int codePriceChange = modify.nextInt();
+                        if(codePriceChange<Enumerador.CODECOMIDAS.getValor()){       //ENUM codecomidas=9 (Codigo das comidas 1 ate 8)
+                            for(i=0;i<Enumerador.COMIDAS.getValor();i++){     //ENUM comidas=8 (max de 8 comidas no cardapio)
+                                if(food[i].getCode()==codePriceChange && !"".equals(food[i].getName())){
+                                    System.out.println("Preco atual: R$ "+food[i].getPrice());
+                                    System.out.print("Digite o novo preco: ");
+                                    
+                                    float foodPrice = lePreco.nextFloat();
+
+                                    food[i].changeItem(foodPrice);
+                                    
+                                    System.out.println("\nPreco alterado com sucesso!!!\n");
+                                }else if(food[i].getCode()==codePriceChange && "".equals(food[i].getName())){
+                                    System.out.println("\nERRO: Impossivel alterar!!!\n");
+                                }
+                            }
+                        }else if(codePriceChange<Enumerador.CODEBEBIDAS.getValor()){   //ENUM codebebidas=15 (Codigo das bebidas 9 ate 14)
+                            for(i=0;i<Enumerador.BEBIDAS.getValor();i++){    //ENUM bebidas=6 (max de 6 comidas no cardapio)
+                                if(drink[i].getCode()==codePriceChange && !"".equals(drink[i].getName())){
+                                    System.out.println("Preco atual: R$ "+drink[i].getPrice());
+                                    System.out.print("Digite o novo preco: ");
+                                    
+                                    float drinkPrice = lePreco.nextFloat();
+                                    
+                                    drink[i].changeItem(drinkPrice);
+                                    
+                                    System.out.println("\nPreco alterado com sucesso!!!\n");
+                                }else if (drink[i].getCode()==codePriceChange && "".equals(drink[i].getName())){
+                                    System.out.println("\nERRO: Impossivel alterar!!!\n");
+                                }
+                            }
+                        }else{
+                            System.out.println("\nERRO: Impossivel alterar!!!\n");
+                        }
+                        break;
+                        
+                    case 6:
+                        System.out.println("Digite o codigo do produto a ser alterado: ");
+                        int codeStockChange = modify.nextInt();
+                        if(codeStockChange<Enumerador.CODECOMIDAS.getValor()){       //ENUM codecomidas=9 (Codigo das comidas 1 ate 8)
+                            for(i=0;i<Enumerador.COMIDAS.getValor();i++){     //ENUM comidas=8 (max de 8 comidas no cardapio)
+                                if(food[i].getCode()==codeStockChange && !"".equals(food[i].getName())){
+                                    System.out.println("Estoque atual: "+food[i].getStock());
+                                    System.out.print("Digite o novo estoque: ");
+                                    
+                                    int foodStock = lePreco.nextInt();
+
+                                    food[i].changeItem(foodStock);
+                                    
+                                    System.out.println("\nEstoque alterado com sucesso!!!\n");
+                                }else if(food[i].getCode()==codeStockChange && "".equals(food[i].getName())){
+                                    System.out.println("\nERRO: Impossivel alterar!!!\n");
+                                }
+                            }
+                        }else if(codeStockChange<Enumerador.CODEBEBIDAS.getValor()){   //ENUM codebebidas=15 (Codigo das bebidas 9 ate 14)
+                            for(i=0;i<Enumerador.BEBIDAS.getValor();i++){    //ENUM bebidas=6 (max de 6 comidas no cardapio)
+                                if(drink[i].getCode()==codeStockChange && !"".equals(drink[i].getName())){
+                                    System.out.println("Estoque atual: "+drink[i].getStock());
+                                    System.out.print("Digite o novo estoque: ");
+                                    
+                                    int drinkStock = lePreco.nextInt();
+                                    
+                                    drink[i].changeItem(drinkStock);
+                                    
+                                    System.out.println("\nEstoque alterado com sucesso!!!\n");
+                                }else if(drink[i].getCode()==codeStockChange && "".equals(drink[i].getName())){
+                                    System.out.println("\nERRO: Impossivel alterar!!!\n");
                                 }
                             }
                         }else{
@@ -221,29 +301,53 @@ public class MenuOpcao {
                         }
                         break;
 
-                    case 5:
+                    case 7:
                         System.out.print("Digite o codigo do produto a ser removido: ");
                         int removeCode = modify.nextInt();
-                        if(removeCode<9){
-                            for(i=0;i<8;i++){
-                                if(food[i].getCode()==removeCode){
-                                    food[i].removeItem();
+                        if(removeCode<Enumerador.CODECOMIDAS.getValor()){       //ENUM codecomidas=9 (Codigo das comidas 1 ate 8)
+                            for(i=0;i<Enumerador.COMIDAS.getValor();i++){     //ENUM comidas=8 (max de 8 comidas no cardapio)
+                                if(food[i].getCode()==removeCode && !"".equals(food[i].getName())){
+                                    if(food[i].getStock()==Enumerador.FALSE.getValor()){
+                                        food[i].removeItem();
+                                        System.out.println("\nProduto removido com sucesso!!!\n");
+                                    }else{
+                                        System.out.println("\nERRO: Ainda ha no estoque!!!\n");
+                                    }
+                                    
+                                }else if(food[i].getCode()==removeCode && "".equals(food[i].getName())){
+                                    
+                                    System.out.println("\nERRO: Impossivel remover!!!\n");
                                 }
                             }
-                        }else if(removeCode<15){
-                            for(i=0;i<6;i++){
-                                if(drink[i].getCode()==removeCode){
-                                    drink[i].removeItem();
+                        }else if(removeCode<Enumerador.CODEBEBIDAS.getValor()){   //ENUM codebebidas=15 (Codigo das bebidas 9 ate 14)
+                            for(i=0;i<Enumerador.BEBIDAS.getValor();i++){    //ENUM bebidas=6 (max de 6 comidas no cardapio)
+                                if(drink[i].getCode()==removeCode && !"".equals(drink[i].getName())){
+                                    if(drink[i].getStock()==Enumerador.FALSE.getValor()){
+                                        drink[i].removeItem();
+                                        System.out.println("\nProduto removido com sucesso!!!\n");
+                                    }else{
+                                        System.out.println("\nERRO: Ainda ha no estoque!!!\n");
+                                    }
+                                    
+                                }else if (drink[i].getCode()==removeCode && "".equals(drink[i].getName())){
+                                    
+                                    System.out.println("\nERRO: Impossivel remover!!!\n");
+                                    
                                 }
                             }
                         }else{
-                            System.out.println("\nERRO: Opcao invalida!!!\n");
+                            
+                            System.out.println("\nERRO: Impossivel remover!!!\n");
+                            
                         }
                         break;
-                    case 6:
+                        
+                    case 8:
+                        
                         this.mainMenu();
                         checkloopADM=false;
                         break;
+                        
                     default:System.out.println("\nERRO: Opcao invalida!!!\n");
                 }
             }while(checkloopADM==true);
@@ -260,12 +364,12 @@ public class MenuOpcao {
             switch(inputUSER){
                 case 1:
                     System.out.print("  ** COMIDAS **  \n");
-                    for(i=0;i<8;i++){
+                    for(i=0;i<Enumerador.COMIDAS.getValor();i++){     //ENUM comidas=8 (max de 8 comidas no cardapio)
                         System.out.print(food[i].showItemsUser());
                     }
 
                     System.out.print("\n  ** BEBIDAS **  \n");
-                    for(i=0;i<6;i++){
+                    for(i=0;i<Enumerador.BEBIDAS.getValor();i++){    //ENUM bebidas=6 (max de 6 comidas no cardapio)
                         System.out.print(drink[i].showItemsUser());
                     }                    
                     break;
@@ -273,16 +377,16 @@ public class MenuOpcao {
                 case 2:
                     System.out.print("Digite o codigo: ");
                     int codDescreve = descreve.nextInt();
-                    if(codDescreve<9){
-                            for(i=0;i<8;i++){
+                    if(codDescreve<Enumerador.CODECOMIDAS.getValor()){       //ENUM codecomidas=9 (Codigo das comidas 1 ate 8)
+                            for(i=0;i<Enumerador.COMIDAS.getValor();i++){     //ENUM comidas=8 (max de 8 comidas no cardapio)
                                 if(food[i].getCode()==codDescreve){
-                                    System.out.print("\n"+food[i].description());
+                                    System.out.println(food[i].description());
                                 }
                             }
-                        }else if(codDescreve<15){
-                            for(i=0;i<6;i++){
+                        }else if(codDescreve<Enumerador.CODEBEBIDAS.getValor()){  //ENUM codebebidas=15 (Codigo das bebidas 9 ate 14)
+                            for(i=0;i<Enumerador.BEBIDAS.getValor();i++){       //ENUM bebidas=6 (max de 6 comidas no cardapio)
                                 if(drink[i].getCode()==codDescreve){
-                                    System.out.print("\n"+drink[i].description());
+                                    System.out.println(drink[i].description());
                                 }
                             }
                         }else{
@@ -293,10 +397,10 @@ public class MenuOpcao {
                 case 3:
                     System.out.print("Digite o codigo do pedido: ");
                     int codOrder = userOrder.nextInt();
-                    if(codOrder<9){
-                            for(i=0;i<8;i++){
+                    if(codOrder<Enumerador.CODECOMIDAS.getValor()){       //ENUM codecomidas=9 (Codigo das comidas 1 ate 8)
+                            for(i=0;i<Enumerador.COMIDAS.getValor();i++){     //ENUM comidas=8 (max de 8 comidas no cardapio)
                                 if(food[i].getCode()==codOrder){
-                                    if(food[i].getStock()!=Disponibilidade.FALSE.getValor()){
+                                    if(food[i].getStock()!=Enumerador.FALSE.getValor()){   //ENUM false=0 (verificador de stock)
                                         food[i].order();
                                         System.out.println("\n"+food[i].describeOrder());
                                     }else{
@@ -307,10 +411,10 @@ public class MenuOpcao {
                                     }
                                 }
                             }
-                        }else if(codOrder<15){
-                            for(i=0;i<6;i++){
+                        }else if(codOrder<Enumerador.CODEBEBIDAS.getValor()){   //ENUM codebebidas=15 (Codigo das bebidas 9 ate 14)
+                            for(i=0;i<Enumerador.BEBIDAS.getValor();i++){      //ENUM bebidas=6 (max de 6 comidas no cardapio)
                                 if(drink[i].getCode()==codOrder){
-                                    if(drink[i].getStock()!=Disponibilidade.FALSE.getValor()){
+                                    if(drink[i].getStock()!=Enumerador.FALSE.getValor()){  //ENUM false=0 (verificador de stock)
                                         drink[i].order();
                                         System.out.println("\n"+drink[i].describeOrder());
                                     }else{

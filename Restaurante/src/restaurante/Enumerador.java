@@ -9,11 +9,11 @@ package restaurante;
  *
  * @author kenny
  */
-public enum Disponibilidade {
-    FALSE(0);
+public enum Enumerador {
+    FALSE(0),BEBIDAS(6),COMIDAS(8),CODECOMIDAS(9),CODEBEBIDAS(15);
     
     private final int valor;
-    Disponibilidade(int valorOpcao){
+    Enumerador(int valorOpcao){
         valor = valorOpcao;
     }
     public int getValor(){

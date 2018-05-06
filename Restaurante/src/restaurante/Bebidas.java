@@ -27,13 +27,9 @@ public class Bebidas extends Produtos {
    
     @Override
     public void removeItem() {
-        if(getStock()==Disponibilidade.FALSE.getValor()){ //ENUM PARA SABER SE TEM ESTOQUE
-            setName("");
-            setBrand(null);
-            setPrice(0f);
-        }else{
-            System.out.println("\nERRO: Ainda ha no estoque!!!\n");
-        }
+        setName("");
+        setBrand(null);
+        setPrice(0f);
     }
     
     @Override
@@ -51,18 +47,26 @@ public class Bebidas extends Produtos {
         } return "";
     }
     
-    public void changeItem(String drinkName,float drinkPrice,String drinkBrand, int drinkStock) {
+    public void changeItem(String drinkName,String drinkBrand,float drinkPrice, int drinkStock) { //overloading
         setName(drinkName);
         setPrice(drinkPrice);
         setBrand(drinkBrand);
         setStock(drinkStock);
     }
     
+    public void changeItem(float drinkPrice){ //overloading
+        setPrice(drinkPrice);
+    }
+    
+    public void changeItem(int drinkStock){ //overloading
+        setStock(drinkStock);
+    }
+    
     @Override
     public String description() {
         if(!"".equals(getName())){
-            return "A bebida "+getName()+" da marca "+getBrand()+" com valor de R$ "+getPrice()+
-                " e"+disponibilidade()+"possuimos no estoque.\n";
+            return "\nA bebida "+getName()+" da marca "+getBrand()+" com valor de R$ "+getPrice()+
+                " e"+disponibilidade()+"possuimos no estoque!!!\n";
         }else{
             return "\nERRO: Produto invalido!!!\n"; 
         }
@@ -70,7 +74,7 @@ public class Bebidas extends Produtos {
     
     public String describeOrder(){
         return "A compra do produto "+getName()+" da marca "+getBrand()+" de preco R$ "
-                +getPrice()+" e de codigo "+getCode()+" foi realizada com sucesso!";
+                +getPrice()+" e de codigo "+getCode()+" foi realizada com sucesso!!!\n";
     }
 
     public String getBrand() {

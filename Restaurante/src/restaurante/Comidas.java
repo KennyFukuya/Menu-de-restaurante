@@ -27,13 +27,9 @@ public class Comidas extends Produtos {
     
     @Override
     public void removeItem() {
-        if(getStock()==Disponibilidade.FALSE.getValor()){ //ENUM PARA SABER SE TEM ESTOQUE
-            setName("");
-            setPrice(0f);
-            setSize(0);
-        }else{
-            System.out.println("\nERRO: Ainda ha no estoque!!!\n");
-        }
+        setName("");
+        setPrice(0f);
+        setSize(0);
     }
     
     @Override
@@ -51,18 +47,26 @@ public class Comidas extends Produtos {
         } return "";
     }
 
-    public void changeItem(String foodName,int foodSize,float foodPrice, int foodStock) {
+    public void changeItem(String foodName,int foodSize,float foodPrice, int foodStock) { //overloading
         setName(foodName);
         setPrice(foodPrice);
         setSize(foodSize);
+        setStock(foodStock);
+    }
+    
+    public void changeItem(float foodPrice){  //overloading
+        setPrice(foodPrice);
+    }
+    
+    public void changeItem(int foodStock){  //overloading
         setStock(foodStock);
     }
 
     @Override
     public String description() {
         if(!"".equals(getName())){
-            return "O prato "+getName()+" com valor de R$ "+getPrice()+" serve "
-                    +getSize()+" pessoa(s) e"+disponibilidade()+"possuimos no estoque.\n";
+            return "\nO prato "+getName()+" com valor de R$ "+getPrice()+" serve "
+                    +getSize()+" pessoa(s) e"+disponibilidade()+"possuimos no estoque!!!\n";
         }else{
             return "\nERRO: Produto invalido!!!\n";
         }
@@ -70,7 +74,7 @@ public class Comidas extends Produtos {
     
     public String describeOrder(){
         return "A compra do produto "+getName()+" que serve "+getSize()+" pessoa(s) e custa R$ "
-                +getPrice()+" e de codigo "+getCode()+" foi realizada com sucesso!";
+                +getPrice()+" e de codigo "+getCode()+" foi realizada com sucesso!!!\n";
     }
     
     public int getSize() {
